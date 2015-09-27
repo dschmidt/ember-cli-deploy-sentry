@@ -52,6 +52,10 @@ Raven.config({
 });
 ```
 
+We don't use it (yet), but [ember-cli-sentry](https://github.com/damiencaselli/ember-cli-sentry) is probably useful to get started quickly.
+Apparently for it to work you will need to set `revisionKey` to your application's `config.APP.version` or set [raven-js][2]'s `release` option later via
+`Raven.setReleaseContext($("meta[name='revision']").attr('content'))`.
+
 - Run the pipeline
 
 ```bash
