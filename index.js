@@ -143,7 +143,7 @@ module.exports = {
         var filePattern = this.readConfig('filePattern');
         
         if(!sentrySettings.release) {
-          throw new Error('revisionKey setting is not available, either provide it manually or make sure the ember-cli-deploy-revision-data plugin is loaded');
+          throw new SilentError('revisionKey setting is not available, either provide it manually or make sure the ember-cli-deploy-revision-data plugin is loaded');
         }
         return this._deleteRelease(sentrySettings).then(function() {}, function() {}).then(function() {
           return plugin._createRelease(sentrySettings).then(function(response) {
@@ -161,7 +161,7 @@ module.exports = {
             });
           }, function(err){
             console.error(err);
-            throw new Error('Creating release failed');
+            throw new SilentError('Creating release failed');
           });
         });
       },
