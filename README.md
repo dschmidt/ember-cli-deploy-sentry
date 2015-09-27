@@ -59,6 +59,20 @@ We don't use it (yet), but [ember-cli-sentry](https://github.com/damiencaselli/e
 Apparently for it to work you will need to set `revisionKey` to your application's `config.APP.version` or set [raven-js][2]'s `release` option later via
 `Raven.setReleaseContext($("meta[name='revision']").attr('content'))`.
 
+- Build sourcemaps in production environment
+
+`ember-cli` builds sourcemaps only in development environment by default. In order to build them always,
+just add the following to your `EmberApp` options.
+```
+sourcemaps: {
+  enabled: true,
+  extensions: ['js']
+}
+```
+
+See also: [ember-cli documentation](http://www.ember-cli.com/user-guide/#source-map)
+
+
 - Run the pipeline
 
 ```bash
