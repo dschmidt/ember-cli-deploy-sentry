@@ -26,8 +26,15 @@ module.exports = {
         },
 
         didDeployMessage: function(context){
-          var url = [this.readConfig('publicUrl'), this.readConfig('sentryOrganizationSlug'),  this.readConfig('sentryProjectSlug'), '/releases/', this.readConfig('revisionKey')];
-          return "Uploaded sourcemaps to sentry release: " + urljoin(url) + '/';
+          return "Uploaded sourcemaps to sentry release: "
+            + this.readConfig('sentryUrl')
+            + '/'
+            + this.readConfig('sentryOrganizationSlug')
+            + '/'
+            + this.readConfig('sentryProjectSlug')
+            + '/releases/'
+            + this.readConfig('revisionKey')
+            + '/';
         }
       },
       requiredConfig: ['publicUrl', 'sentryUrl', 'sentryOrganizationSlug', 'sentryProjectSlug', 'sentryApiKey', 'revisionKey'],
