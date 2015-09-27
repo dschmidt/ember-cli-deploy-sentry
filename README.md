@@ -52,7 +52,10 @@ Raven.config({
 });
 ```
 
-We don't use it (yet), but [ember-cli-sentry](https://github.com/damiencaselli/ember-cli-sentry) is probably useful to get started quickly.
+Last but not least make sure to setup proper exception catching like [this](https://github.com/getsentry/raven-js/blob/master/plugins/ember.js).
+
+
+We don't use it (yet), but [ember-cli-sentry](https://github.com/damiencaselli/ember-cli-sentry) is probably useful to get started quickly. (It also sets up the exception handlers for you)
 Apparently for it to work you will need to set `revisionKey` to your application's `config.APP.version` or set [raven-js][2]'s `release` option later via
 `Raven.setReleaseContext($("meta[name='revision']").attr('content'))`.
 
