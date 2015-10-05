@@ -30,6 +30,7 @@ module.exports = {
         revisionKey: function(context) {
           return context.revisionData && context.revisionData.revisionKey;
         },
+        disableRevisionTagging: false,
 
         didDeployMessage: function(context){
           return "Uploaded sourcemaps to sentry release: "
@@ -53,7 +54,18 @@ module.exports = {
       },
 
       willUpload: function(context) {
-        var revisionKey = context.revisionKey;
+        var isDisabled = this.readConfig('disableRevisionTagging');
+        if(isDisabled) {
+          return;
+        }
+
+        var revisionKey = this.readConfig('revisionKey');
+        if(!revisionKey) {
+          return new SilentError("Could not find revision key to fingerprint Sentry revision with.");
+        }
+
+        // TODO instead of plainly reading index.html, minimatch
+        // getConfig('revision patterns') on context.distFiles
         var indexPath = path.join(context.distDir, "index.html");
         var index = fs.readFileSync(indexPath, 'utf8');
         var index = index.replace('<meta name="sentry:revision">',
