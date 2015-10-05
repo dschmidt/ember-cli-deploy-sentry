@@ -36,28 +36,33 @@ ENV.sentry {
 ```
 - Integrate [raven-js][2] in your page
 
-It's important to initialize the client with `release` as the `revisionKey`.
-You will probably need to either write the `revisionKey` into your `index.html` file at build time or when serving it.
-
-For example add this to your `index.html` and dynamically replace the `$REVISION` string with `revisionKey`:
+By default a meta tag with the key name `sentry:revision` is inserted in your index.html, like so
 ```html
-<meta name="revision" content="$REVISION">
+<meta name="sentry:revision" content="(revision)">
 ```
 
-Then when you setup [raven-js][2] you can retrieve it like so:
+Disabling this behavior is done by configuring in `deploy.js`:
+```javascript
+ENV.sentry {
+  // ... other config options
+  enableRevisionTagging: false
+}
+```
+
+When you setup [raven-js][2] you can retrieve it like so:
 
 ```javascript
 Raven.config({
-    release: $("meta[name='revision']").attr('content')
+    release: $("meta[name='sentry:revision']").attr('content')
 });
 ```
 
 Last but not least make sure to setup proper exception catching like [this](https://github.com/getsentry/raven-js/blob/master/plugins/ember.js).
 
 
-We don't use it (yet), but [ember-cli-sentry](https://github.com/damiencaselli/ember-cli-sentry) is probably useful to get started quickly. (It also sets up the exception handlers for you)
-Apparently for it to work you will need to set `revisionKey` to your application's `config.APP.version` or set [raven-js][2]'s `release` option later via
-`Raven.setReleaseContext($("meta[name='revision']").attr('content'))`.
+Also, [ember-cli-sentry](https://github.com/damiencaselli/ember-cli-sentry) is useful to get started quickly. (It also sets up the exception handlers for you)
+For it to work you will need to set `revisionKey` to your application's `config.APP.version` or set [raven-js][2]'s `release` option later via
+`Raven.setReleaseContext($("meta[name='sentry:revision']").attr('content'))`. Doing this automatically
 
 - Build sourcemaps in production environment
 
