@@ -30,7 +30,7 @@ module.exports = {
         revisionKey: function(context) {
           return context.revisionData && context.revisionData.revisionKey;
         },
-        disableRevisionTagging: false,
+        enableRevisionTagging: true,
 
         didDeployMessage: function(context){
           return "Uploaded sourcemaps to sentry release: "
@@ -54,8 +54,8 @@ module.exports = {
       },
 
       willUpload: function(context) {
-        var isDisabled = this.readConfig('disableRevisionTagging');
-        if(isDisabled) {
+        var isEnabled = this.readConfig('enableRevisionTagging');
+        if(!isDisabled) {
           return;
         }
 

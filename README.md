@@ -45,7 +45,7 @@ Disabling this behavior is done by configuring in `deploy.js`:
 ```javascript
 ENV.sentry {
   // ... other config options
-  disableRevisionTagging: true
+  enableRevisionTagging: false
 }
 ```
 
