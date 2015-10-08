@@ -48,7 +48,7 @@ module.exports = {
       configure: function(/* context */) {
         this.log('validating config');
 
-        ['distDir', 'filePattern', 'revisionKey', 'didDeployMessage'].forEach(this.applyDefaultConfigProperty.bind(this));
+        ['distDir', 'filePattern', 'revisionKey', 'enableRevisionTagging', 'didDeployMessage'].forEach(this.applyDefaultConfigProperty.bind(this));
 
         this.log('config ok');
       },
