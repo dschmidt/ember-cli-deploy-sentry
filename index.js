@@ -55,7 +55,7 @@ module.exports = {
 
       willUpload: function(context) {
         var isEnabled = this.readConfig('enableRevisionTagging');
-        if(!isDisabled) {
+        if(!isEnabled) {
           return;
         }
 
