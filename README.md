@@ -36,33 +36,11 @@ ENV.sentry {
 ```
 - Integrate [raven-js][2] in your page
 
-By default a meta tag with the key name `sentry:revision` is inserted in your index.html, like so
-```html
-<meta name="sentry:revision" content="(revision)">
-```
+Install [ember-cli-sentry](https://github.com/damiencaselli/ember-cli-sentry) but import the raven service from `ember-cli-deploy-sentry/service/raven`,
+which will automatically handle setting up the release version for you. Sentry needs this to find the correct sourcemap for an error that occurs.
 
-Disabling this behavior is done by configuring in `deploy.js`:
-```javascript
-ENV.sentry {
-  // ... other config options
-  enableRevisionTagging: false
-}
-```
+If you don't want to use `ember-cli-sentry` but set [raven-js][2] up manually see [Manual integration with raven-js](#manual-integration-with-raven-js).
 
-When you setup [raven-js][2] you can retrieve it like so:
-
-```javascript
-Raven.config({
-    release: $("meta[name='sentry:revision']").attr('content')
-});
-```
-
-Last but not least make sure to setup proper exception catching like [this](https://github.com/getsentry/raven-js/blob/master/plugins/ember.js).
-
-
-Also, [ember-cli-sentry](https://github.com/damiencaselli/ember-cli-sentry) is useful to get started quickly. (It also sets up the exception handlers for you)
-For it to work you will need to set `revisionKey` to your application's `config.APP.version` or set [raven-js][2]'s `release` option later via
-`Raven.setReleaseContext($("meta[name='sentry:revision']").attr('content'))`. Doing this automatically
 
 - Build sourcemaps in production environment
 
@@ -179,6 +157,12 @@ The revision string that is used to create releases in sentry.
   }
 ```
 
+### enableRevisionTagging
+
+Enable adding a meta tag with the current revisionKey into the head of your `index.html`.
+
+*Default* true
+
 ## Prerequisites
 
 The following properties are expected to be present on the deployment `context` object:
@@ -186,15 +170,38 @@ The following properties are expected to be present on the deployment `context` 
 - `distDir`                     (provided by [ember-cli-deploy-build][11])
 - `revisionData.revisionKey`    (provided by [ember-cli-deploy-revision-data][12])
 
+
+## Manual integration with raven-js
+
+By default a meta tag with the key name `sentry:revision` is inserted in your index.html:
+```html
+<meta name="sentry:revision" content="(revision)">
+
+```
+
+When you setup [raven-js][2] you can retrieve it like this:
+
+```javascript
+Raven.config({
+    release: $("meta[name='sentry:revision']").attr('content')
+});
+```
+
+If you only want to use the sourcemap upload functionality of `ember-cli-deploy-sentry`, you can disable automatic meta tag insertion completely by setting [enableRevisionTagging](#enableRevisionTagging) to `false`.
+
+
+Last but not least make sure to setup proper exception catching like [this](https://github.com/getsentry/raven-js/blob/master/plugins/ember.js).
+
 ## Running Tests
 
 - `npm test`
 
 ## TODO
 
-- Tests ... right?
 - use `context.distFiles` from [ember-cli-deploy-build][11] instead globbing distDir again?
 - automatically setup raven-js? If you want this, let me know.
+- add revision tagging file pattern
+- make meta name configurable and document `service.releaseMetaName`
 
 ### State
 
