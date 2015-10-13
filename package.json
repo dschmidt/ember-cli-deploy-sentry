@@ -9,7 +9,7 @@
   "scripts": {
     "start": "ember server",
     "build": "ember build",
-    "test": "ember try:testall"
+    "test": "node tests/runner.js"
   },
   "repository": "dschmidt/ember-cli-deploy-sentry",
   "engines": {
@@ -35,7 +35,11 @@
     "ember-disable-proxy-controllers": "^1.0.0",
     "ember-export-application-global": "^1.0.2",
     "ember-try": "0.0.6",
-    "rsvp": "^3.1.0"
+    "rsvp": "^3.1.0",
+    "chai": "^2.2.0",
+    "chai-as-promised": "^5.0.0",
+    "mocha": "^2.2.4",
+    "mock-fs": "^3.3.0"
   },
   "keywords": [
     "ember-addon",

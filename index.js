@@ -45,13 +45,6 @@ module.exports = {
         }
       },
       requiredConfig: ['publicUrl', 'sentryUrl', 'sentryOrganizationSlug', 'sentryProjectSlug', 'sentryApiKey', 'revisionKey'],
-      configure: function(/* context */) {
-        this.log('validating config');
-
-        ['distDir', 'filePattern', 'revisionKey', 'enableRevisionTagging', 'didDeployMessage'].forEach(this.applyDefaultConfigProperty.bind(this));
-
-        this.log('config ok');
-      },
 
       willUpload: function(context) {
         var isEnabled = this.readConfig('enableRevisionTagging');
@@ -70,7 +63,6 @@ module.exports = {
         var index = fs.readFileSync(indexPath, 'utf8');
         var index = index.replace('<meta name="sentry:revision">',
             '<meta name="sentry:revision" content="'+revisionKey+'">');
-
         fs.writeFileSync(indexPath, index);
       },
 
