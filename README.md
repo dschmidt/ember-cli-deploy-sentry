@@ -1,4 +1,4 @@
-# Ember-cli-deploy-sentry
+# Ember-cli-deploy-sentry [![Circle CI](https://circleci.com/gh/dschmidt/ember-cli-deploy-sentry/tree/master.svg?style=shield)](https://circleci.com/gh/dschmidt/ember-cli-deploy-sentry/tree/master)
 
 > An ember-cli-deploy-plugin to upload javascript sourcemaps to [Sentry][1].
 
