@@ -176,7 +176,8 @@ module.exports = {
                 return Promise.all(uploads).then(function() {
                     return plugin._getReleaseFiles(sentrySettings);
                 }).then(function(response) {
-                    console.log('RELEASE FILES: ', response);
+                    this.log('Files known to sentry for this release', { verbose: true });
+                    this.log(response, { verbose: true });
                 });
             });
           }, function(err){
