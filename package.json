@@ -54,6 +54,7 @@
     "url-join": "0.0.1"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "after": "ember-cli-deploy-revision-data"
   }
 }
