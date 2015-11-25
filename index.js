@@ -9,6 +9,7 @@ var urljoin = require("url-join");
 var request = require('request-promise');
 var path = require('path');
 var fs = require('fs');
+var FormData = require('form-data');
 
 module.exports = {
   name: 'ember-cli-deploy-sentry',
@@ -118,20 +119,34 @@ module.exports = {
       },
 
       _uploadFile: function uploadFile(sentrySettings, distDir, filePath) {
-        var url = urljoin(sentrySettings.url, '/api/0/projects/', sentrySettings.organizationSlug,  sentrySettings.projectSlug, '/releases/', sentrySettings.release, '/files/');
+        var host = sentrySettings.url;
+        var urlPath = urljoin('/api/0/projects/', sentrySettings.organizationSlug,  sentrySettings.projectSlug, '/releases/', sentrySettings.release, '/files/');
 
-        var formData = {
-          name: urljoin(sentrySettings.publicUrl, filePath),
-          file: fs.createReadStream(path.join(distDir, filePath))
-        };
+        var formData = new FormData();
+        formData.append('name', urljoin(sentrySettings.publicUrl, filePath));
 
-        return request({
-          method: 'POST',
-          uri: url,
-          auth: {
-            user: sentrySettings.apiKey
-          },
-          formData: formData
+        var fileName = path.join(distDir, filePath);
+        var fileSize = fs.statSync(fileName)["size"];
+        formData.append('file', fs.createReadStream(fileName), {
+          knownLength: fileSize
+        });
+
+        return new Promise(function(resolve, reject) {
+          formData.submit({
+            protocol: 'https:',
+            host: 'app.getsentry.com',
+            path: urlPath,
+            auth: sentrySettings.apiKey + ':'
+          }, function(error, result) {
+            if(error) {
+              reject(error);
+            }
+            result.resume();
+
+            result.on('end', function() {
+              resolve();
+            });
+          });
         });
       },
 
