@@ -10,6 +10,7 @@ var request = require('request-promise');
 var path = require('path');
 var fs = require('fs');
 var FormData = require('form-data');
+var zlib = require('zlib');
 
 module.exports = {
   name: 'ember-cli-deploy-sentry',
@@ -28,6 +29,7 @@ module.exports = {
           return context.distDir;
         },
         filePattern: '/**/*.{js,map}',
+        gunzip: false,
         revisionKey: function(context) {
           return context.revisionData && context.revisionData.revisionKey;
         },
@@ -118,34 +120,75 @@ module.exports = {
         });
       },
 
-      _uploadFile: function uploadFile(sentrySettings, distDir, filePath) {
+      _uploadFile: function uploadFile(sentrySettings, distDir, filePath, gunzip) {
         var host = sentrySettings.url;
         var urlPath = urljoin('/api/0/projects/', sentrySettings.organizationSlug,  sentrySettings.projectSlug, '/releases/', sentrySettings.release, '/files/');
 
         var formData = new FormData();
         formData.append('name', urljoin(sentrySettings.publicUrl, filePath));
 
-        var fileName = path.join(distDir, filePath);
-        var fileSize = fs.statSync(fileName)["size"];
-        formData.append('file', fs.createReadStream(fileName), {
-          knownLength: fileSize
-        });
-
         return new Promise(function(resolve, reject) {
-          formData.submit({
-            protocol: 'https:',
-            host: 'app.getsentry.com',
-            path: urlPath,
-            auth: sentrySettings.apiKey + ':'
-          }, function(error, result) {
-            if(error) {
-              reject(error);
-            }
-            result.resume();
+          var addFilePromise = new Promise(function(resolve, reject){
+            var fileName = path.join(distDir, filePath);
+            if(gunzip){
+              var gunzipInp = zlib.createGunzip();
+              var gunzippedoutFilename = fileName + '.unzipped';
+              var inp = fs.createReadStream(fileName);
+              var gunzippedout = fs.createWriteStream(gunzippedoutFilename);
 
-            result.on('end', function() {
+              inp.pipe(gunzipInp).pipe(gunzippedout);
+
+              inp.on('error', function(err){
+                reject(err);
+              });
+
+              gunzippedout.on('error', function(err){
+                reject(err);
+              });
+
+              gunzippedout.on('finish', function(){
+                var gunzippedFileSize = fs.statSync(gunzippedoutFilename)["size"];
+
+                formData.append('file', fs.createReadStream(gunzippedoutFilename), {
+                  knownLength: gunzippedFileSize
+                });
+
+                resolve(gunzippedoutFilename);
+              });
+
+            }else{
+              var fileSize = fs.statSync(fileName)["size"];
+
+              formData.append('file', fs.createReadStream(fileName), {
+                knownLength: fileSize
+              });
+
               resolve();
+            }
+          });
+
+          addFilePromise.then(function(gunzippedoutFilename){
+            formData.submit({
+              protocol: 'https:',
+              host: 'app.getsentry.com',
+              path: urlPath,
+              auth: sentrySettings.apiKey + ':'
+            }, function(error, result) {
+              if(error) {
+                reject(error);
+              }
+              result.resume();
+
+              if(gunzip && gunzippedoutFilename){
+                fs.unlink(gunzippedoutFilename);
+              }
+
+              result.on('end', function() {
+                resolve();
+              });
             });
+          }, function(){
+            reject();
           });
         });
       },
@@ -176,6 +219,7 @@ module.exports = {
             release: plugin.readConfig('revisionKey')
         };
         var filePattern = this.readConfig('filePattern');
+        var gunzip = plugin.readConfig('gunzip');
 
         if(!sentrySettings.release) {
           throw new SilentError('revisionKey setting is not available, either provide it manually or make sure the ember-cli-deploy-revision-data plugin is loaded');
@@ -183,17 +227,16 @@ module.exports = {
         return this._deleteRelease(sentrySettings).then(function() {}, function() {}).then(function() {
           return plugin._createRelease(sentrySettings).then(function(response) {
             return plugin._getUploadFiles(distDir, filePattern).then(function(files) {
-                var uploads = [];
-                for(var i=0;i<files.length;i++) {
-                    var file = files[i];
-                    uploads.push(plugin._uploadFile(sentrySettings, distDir, files[i]));
-                }
-                return Promise.all(uploads).then(function() {
-                    return plugin._getReleaseFiles(sentrySettings);
-                }).then(function(response) {
-                    plugin.log('Files known to sentry for this release', { verbose: true });
-                    plugin.log(response, { verbose: true });
-                });
+              var uploads = [];
+              for(var i=0;i<files.length;i++) {
+                uploads.push(plugin._uploadFile(sentrySettings, distDir, files[i], gunzip));
+              }
+              return Promise.all(uploads).then(function() {
+                return plugin._getReleaseFiles(sentrySettings);
+              }).then(function(response) {
+                plugin.log('Files known to sentry for this release', { verbose: true });
+                plugin.log(response.map(function(file){return file.name;}), { verbose: true });
+              });
             });
           }, function(err){
             console.error(err);
