@@ -47,7 +47,7 @@ module.exports = {
       },
       requiredConfig: ['publicUrl', 'sentryUrl', 'sentryOrganizationSlug', 'sentryProjectSlug', 'sentryApiKey', 'revisionKey'],
 
-      didBuild: function(context) {
+      prepare: function(context) {
         var isEnabled = this.readConfig('enableRevisionTagging');
         if(!isEnabled) {
           return;
