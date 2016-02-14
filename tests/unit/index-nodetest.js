@@ -55,7 +55,7 @@ describe('deploySentry plugin', function() {
     });
 
     assert.equal(typeof plugin.configure, 'function');
-    assert.equal(typeof plugin.didBuild, 'function');
+    assert.equal(typeof plugin.prepare, 'function');
     assert.equal(typeof plugin.upload, 'function');
     assert.equal(typeof plugin.didDeploy, 'function');
   });
@@ -174,7 +174,7 @@ describe('deploySentry plugin', function() {
     })
   });
 
-  describe('didBuild hook', function() {
+  describe('prepare hook', function() {
     var plugin, fileSystem, indexFile;
     beforeEach(function() {
       plugin = subject.createDeployPlugin({
@@ -201,7 +201,7 @@ describe('deploySentry plugin', function() {
 
       plugin.beforeHook(context);
       plugin.configure(context);
-      plugin.didBuild(context);
+      plugin.prepare(context);
       var result = fs.readFileSync('/path/to/fake/dir/index.html', 'utf8');
       assert.notEqual(result.indexOf('<meta name="sentry:revision">'), -1);
     });
@@ -209,7 +209,7 @@ describe('deploySentry plugin', function() {
     it('fills in revision data in the meta-tag', function() {
       plugin.beforeHook(context);
       plugin.configure(context);
-      plugin.didBuild(context);
+      plugin.prepare(context);
       var result = fs.readFileSync('/path/to/fake/dir/index.html', 'utf8');
       assert.notEqual(result.indexOf('<meta name="sentry:revision" content="'+context.config.deploySentry.revisionKey+'">'), -1);
     });
