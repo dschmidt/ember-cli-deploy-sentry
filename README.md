@@ -146,6 +146,12 @@ A message that will be displayed after the distDir has been copied to destDir.
 
 *Default:* `/**/*.{js,map}`
 
+### gunzip
+
+If **all** the files matching `filePattern` are gzipped (i.e. you're using [[ember-cli-deploy-gzip](https://github.com/ember-cli-deploy/ember-cli-deploy-gzip)), it will unzip them first before uploading. This is necessary since Sentry cannot parse gzipped artifacts.
+
+*Default:* `false`
+
 ### revisionKey
 
 The revision string that is used to create releases in sentry.
@@ -212,5 +218,5 @@ It works. We use it in production at [Hatchet](https://hatchet.is).
 [4]: https://docs.getsentry.com/on-premise/clients/javascript/sourcemaps/ "Sentry Documentation for Javascript Sourcemaps"
 
 [10]: http://ember-cli.github.io/ember-cli-deploy/plugins "Plugin Documentation"
-[11]: https://github.com/zapnito/ember-cli-deploy-build "ember-cli-deploy-build"
-[12]: https://github.com/zapnito/ember-cli-deploy-revision-data "ember-cli-deploy-revision-data"
+[11]: https://github.com/ember-cli-deploy/ember-cli-deploy-build "ember-cli-deploy-build"
+[12]: https://github.com/ember-cli-deploy/ember-cli-deploy-revision-data "ember-cli-deploy-revision-data"
