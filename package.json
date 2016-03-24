@@ -55,7 +55,8 @@
     "glob": "^5.0.14",
     "request-promise": "^0.4.3",
     "silent-error": "^1.0.0",
-    "url-join": "0.0.1"
+    "url-join": "0.0.1",
+    "throat": "^2.0.0"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
