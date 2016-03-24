@@ -10,6 +10,9 @@ var request = require('request-promise');
 var path = require('path');
 var fs = require('fs');
 var FormData = require('form-data');
+var throat = require('throat');
+var url = require('url');
+
 
 module.exports = {
   name: 'ember-cli-deploy-sentry',
@@ -119,9 +122,9 @@ module.exports = {
       },
 
       _uploadFile: function uploadFile(sentrySettings, distDir, filePath) {
-        var host = sentrySettings.url;
+        var sentry_url = sentrySettings.url;
         var urlPath = urljoin('/api/0/projects/', sentrySettings.organizationSlug,  sentrySettings.projectSlug, '/releases/', sentrySettings.release, '/files/');
-
+        var host = url.parse(sentry_url).host
         var formData = new FormData();
         formData.append('name', urljoin(sentrySettings.publicUrl, filePath));
 
@@ -134,7 +137,7 @@ module.exports = {
         return new Promise(function(resolve, reject) {
           formData.submit({
             protocol: 'https:',
-            host: 'app.getsentry.com',
+            host: host,
             path: urlPath,
             auth: sentrySettings.apiKey + ':'
           }, function(error, result) {
@@ -183,12 +186,11 @@ module.exports = {
         return this._deleteRelease(sentrySettings).then(function() {}, function() {}).then(function() {
           return plugin._createRelease(sentrySettings).then(function(response) {
             return plugin._getUploadFiles(distDir, filePattern).then(function(files) {
-                var uploads = [];
-                for(var i=0;i<files.length;i++) {
-                    var file = files[i];
-                    uploads.push(plugin._uploadFile(sentrySettings, distDir, files[i]));
-                }
-                return Promise.all(uploads).then(function() {
+                var uploader = function(f){
+                    return plugin._uploadFile(sentrySettings, distDir, f);
+                };
+
+                return Promise.all(files.map(throat(5, uploader))).then(function() {
                     return plugin._getReleaseFiles(sentrySettings);
                 }).then(function(response) {
                     plugin.log('Files known to sentry for this release', { verbose: true });
