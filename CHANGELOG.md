@@ -1,5 +1,9 @@
 # ember-cli-deploy-sentry Changelog
 
+### 0.3.1
+
+- Fix possibly broken tarball
+
 ### 0.3.0
 
 - Rate limit uploaded sourcemaps
