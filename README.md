@@ -34,7 +34,7 @@ ENV.sentry {
 ```
 - Integrate [raven-js][2] in your page
 
-Install [ember-cli-sentry](https://github.com/damiencaselli/ember-cli-sentry) but import the raven service from `ember-cli-deploy-sentry/service/raven`,
+Install [ember-cli-sentry](https://github.com/damiencaselli/ember-cli-sentry) but import the raven service from `ember-cli-deploy-sentry/services/raven`,
 which will automatically handle setting up the release version for you. Sentry needs this to find the correct sourcemap for an error that occurs.
 
 If you don't want to use `ember-cli-sentry` but set [raven-js][2] up manually see [Manual integration with raven-js](#manual-integration-with-raven-js).
