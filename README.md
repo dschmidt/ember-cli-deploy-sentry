@@ -83,7 +83,7 @@ For detailed information on how configuration of plugins works, please refer to 
 
 ### publicUrl
 
-The public url to the root of your website.
+The public url to the root of where your assets are stored. For instance, if your assets are stored on Cloudfront, it would be `https://xxxx.cloudfront.net`.
 
 *Required*
 
