@@ -24,7 +24,7 @@ $ ember install ember-cli-deploy-sentry
 - Place the following configuration into `config/deploy.js`
 
 ```javascript
-ENV.sentry {
+ENV.sentry = {
   publicUrl: 'https://your.awesome.site',
   sentryUrl: 'https://sentry.your.awesome.site',
   sentryOrganizationSlug: 'AwesomeOrg',

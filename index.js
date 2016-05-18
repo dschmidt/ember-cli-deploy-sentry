@@ -66,7 +66,7 @@ module.exports = {
         var indexPath = path.join(context.distDir, "index.html");
         var index = fs.readFileSync(indexPath, 'utf8');
         var index = index.replace('<meta name="sentry:revision">',
-            '<meta name="sentry:revision" content="'+revisionKey+'">');
+                                  '<meta name="sentry:revision" content="'+revisionKey+'">');
         fs.writeFileSync(indexPath, index);
       },
 
@@ -158,11 +158,11 @@ module.exports = {
         return request({
           uri: url,
           auth: {
-              user: sentrySettings.apiKey
+            user: sentrySettings.apiKey
           },
           json: true,
           body: {
-              version: sentrySettings.release
+            version: sentrySettings.release
           }
         });
       },
@@ -171,12 +171,12 @@ module.exports = {
         var plugin = this;
         var distDir = this.readConfig('distDir');
         var sentrySettings = {
-            url: plugin.readConfig('sentryUrl'),
-            publicUrl: plugin.readConfig('publicUrl'),
-            organizationSlug: plugin.readConfig('sentryOrganizationSlug'),
-            projectSlug: plugin.readConfig('sentryProjectSlug'),
-            apiKey: plugin.readConfig('sentryApiKey'),
-            release: plugin.readConfig('revisionKey')
+          url: plugin.readConfig('sentryUrl'),
+          publicUrl: plugin.readConfig('publicUrl'),
+          organizationSlug: plugin.readConfig('sentryOrganizationSlug'),
+          projectSlug: plugin.readConfig('sentryProjectSlug'),
+          apiKey: plugin.readConfig('sentryApiKey'),
+          release: plugin.readConfig('revisionKey')
         };
         var filePattern = this.readConfig('filePattern');
 
@@ -186,16 +186,18 @@ module.exports = {
         return this._deleteRelease(sentrySettings).then(function() {}, function() {}).then(function() {
           return plugin._createRelease(sentrySettings).then(function(response) {
             return plugin._getUploadFiles(distDir, filePattern).then(function(files) {
-                var uploader = function(f){
-                    return plugin._uploadFile(sentrySettings, distDir, f);
-                };
+              var uploader = function(f){
+                return plugin._uploadFile(sentrySettings, distDir, f);
+              };
 
-                return Promise.all(files.map(throat(5, uploader))).then(function() {
-                    return plugin._getReleaseFiles(sentrySettings);
-                }).then(function(response) {
-                    plugin.log('Files known to sentry for this release', { verbose: true });
-                    plugin.log(response, { verbose: true });
-                });
+              return Promise.all(files.map(throat(5, uploader))).then(function() {
+                return plugin._getReleaseFiles(sentrySettings);
+              }).then(function(response) {
+                plugin.log('Files known to sentry for this release', { verbose: true });
+                for (var i=0 ; i<response.length ; i++) {
+                  plugin.log('✔  ' + response[i].name, { verbose: true });
+                }
+              });
             });
           }, function(err){
             console.error(err);
