@@ -114,7 +114,7 @@ module.exports = {
             this.log('Leaving files alone.');
             return this.logFiles(response);
           }
-        });
+        }.bind(this));
       },
       createRelease: function createRelease(error) {
         if (error.statusCode === 404) {
