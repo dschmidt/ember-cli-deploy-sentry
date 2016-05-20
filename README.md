@@ -161,6 +161,12 @@ Enable adding a meta tag with the current revisionKey into the head of your `ind
 
 *Default* true
 
+### replaceFiles
+
+At deploy-time, the plugin will check your Sentry instance for an existing release under the current `revisionKey`. If a release is found and this is set to `true`, all existing files for the matching release will be deleted before the current build's files are uploaded to Sentry.
+
+*Default* false
+
 ## Prerequisites
 
 The following properties are expected to be present on the deployment `context` object:
