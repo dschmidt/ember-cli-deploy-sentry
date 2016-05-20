@@ -224,7 +224,7 @@ module.exports = {
           },
         })
       },
-      _logFiles: function logFiles(response) {
+      logFiles: function logFiles(response) {
         this.log('Files known to sentry for this release', { verbose: true });
         response.forEach(function(file) { this.log('✔  ' + file.name, { verbose: true }) }, this);
       },
