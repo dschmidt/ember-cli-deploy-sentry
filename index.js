@@ -104,7 +104,7 @@ module.exports = {
       handleExistingRelease: function handleExistingRelease(response) {
         this.log('Release ' + response.version + ' exists.');
         this.log('Retrieving release files.');
-        this._getReleaseFiles().then(function(response) {
+        return this._getReleaseFiles().then(function(response) {
           if (this.readConfig('replaceFiles')) {
             this.log('Replacing files.');
             return Promise.all(response.map(this._deleteFile, this))
