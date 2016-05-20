@@ -102,7 +102,14 @@ module.exports = {
       },
       handleExistingRelease: function handleExistingRelease(response) {
         this.log('Release ' + response.version + ' exists.');
-        return this._getReleaseFiles();
+        this._getReleaseFiles().then(function(response) {
+          if (this.readConfig('replaceFiles')) {
+            return Promise.all(response.map(this._deleteFile, this))
+              .then(this.doUpload.bind(this))
+          } else {
+            this.log('Leaving files alone.');
+          }
+        });
       },
       createRelease: function createRelease(error) {
         if (error.statusCode === 404) {
@@ -198,6 +205,16 @@ module.exports = {
           },
           json: true
         });
+      },
+      _deleteFile: function deleteFile(file) {
+        this.log('Deleting ' + file.name);
+        return request({
+          uri: urljoin(this.releaseUrl, 'files/', file.id, '/'),
+          method: 'DELETE',
+          auth: {
+            user: this.sentrySettings.apiKey
+          },
+        })
       },
       _logFiles: function logFiles(response) {
         this.log('Files known to sentry for this release', { verbose: true });
