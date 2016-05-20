@@ -197,10 +197,11 @@ module.exports = {
             user: this.sentrySettings.apiKey
           },
           json: true
-        }).then(function(response) {
-          this.log('Files known to sentry for this release', { verbose: true });
-          response.forEach(function(file) { this.log('✔  ' + file.name, { verbose: true }) }, this);
-        }.bind(this));
+        });
+      },
+      _logFiles: function logFiles(response) {
+        this.log('Files known to sentry for this release', { verbose: true });
+        response.forEach(function(file) { this.log('✔  ' + file.name, { verbose: true }) }, this);
       },
 
       didDeploy: function(/* context */){
