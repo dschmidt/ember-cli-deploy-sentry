@@ -106,8 +106,10 @@ module.exports = {
           if (this.readConfig('replaceFiles')) {
             return Promise.all(response.map(this._deleteFile, this))
               .then(this.doUpload.bind(this))
+              .then(this.logFiles.bind(this, response))
           } else {
             this.log('Leaving files alone.');
+            return this.logFiles(response);
           }
         });
       },
@@ -132,6 +134,7 @@ module.exports = {
           resolveWithFullResponse: true
         })
         .then(this.doUpload.bind(this))
+        .then(this.logFiles.bind(this))
         .catch(function(err){
           console.error(err);
           throw new SilentError('Creating release failed');
