@@ -17,7 +17,7 @@ var url = require('url');
 module.exports = {
   name: 'ember-cli-deploy-sentry',
 
-  contentFor: function(type, config) {
+  contentFor: function(type/*, config*/) {
     if (type === 'head-footer') {
       return '<meta name="sentry:revision"></meta>';
     }
@@ -36,7 +36,7 @@ module.exports = {
         },
         enableRevisionTagging: true,
 
-        didDeployMessage: function(context){
+        didDeployMessage: function(/*context*/){
           return "Uploaded sourcemaps to sentry release: "
             + this.readConfig('sentryUrl')
             + '/'
@@ -66,7 +66,7 @@ module.exports = {
         // getConfig('revision patterns') on context.distFiles
         var indexPath = path.join(context.distDir, "index.html");
         var index = fs.readFileSync(indexPath, 'utf8');
-        var index = index.replace('<meta name="sentry:revision">',
+        index = index.replace('<meta name="sentry:revision">',
                                   '<meta name="sentry:revision" content="'+revisionKey+'">');
         fs.writeFileSync(indexPath, index);
       },
@@ -109,7 +109,7 @@ module.exports = {
             this.log('Replacing files.');
             return Promise.all(response.map(this._deleteFile, this))
               .then(this.doUpload.bind(this))
-              .then(this.logFiles.bind(this, response))
+              .then(this.logFiles.bind(this, response));
           } else {
             this.log('Leaving files alone.');
             return this.logFiles(response);
@@ -177,7 +177,7 @@ module.exports = {
         var distDir = this.readConfig('distDir');
         var sentry_url = this.sentrySettings.url;
         var urlPath = urljoin(this.releaseUrl, 'files/');
-        var host = url.parse(sentry_url).host
+        var host = url.parse(sentry_url).host;
         var formData = new FormData();
         formData.append('name', urljoin(this.sentrySettings.publicUrl, filePath));
 
@@ -222,11 +222,11 @@ module.exports = {
           auth: {
             user: this.sentrySettings.apiKey
           },
-        })
+        });
       },
       logFiles: function logFiles(response) {
         this.log('Files known to sentry for this release', { verbose: true });
-        response.forEach(function(file) { this.log('✔  ' + file.name, { verbose: true }) }, this);
+        response.forEach(function(file) { this.log('✔  ' + file.name, { verbose: true }); }, this);
       },
 
       didDeploy: function(/* context */){
