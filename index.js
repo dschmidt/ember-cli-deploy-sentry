@@ -124,12 +124,15 @@ module.exports = {
           },
           resolveWithFullResponse: true
         })
-        .then(this._getFilesToUpload.bind(this))
-        .then(this._uploadFileList.bind(this))
+        .then(this.doUpload.bind(this))
         .catch(function(err){
           console.error(err);
           throw new SilentError('Creating release failed');
         });
+      },
+      doUpload: function doUpload() {
+        return this._getFilesToUpload()
+          .then(this._uploadFileList.bind(this));
       },
       _getFilesToUpload: function getFilesToUpload() {
         var dir = this.readConfig('distDir');
