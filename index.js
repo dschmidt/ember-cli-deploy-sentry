@@ -102,8 +102,10 @@ module.exports = {
       },
       handleExistingRelease: function handleExistingRelease(response) {
         this.log('Release ' + response.version + ' exists.');
+        this.log('Retrieving release files.');
         this._getReleaseFiles().then(function(response) {
           if (this.readConfig('replaceFiles')) {
+            this.log('Replacing files.');
             return Promise.all(response.map(this._deleteFile, this))
               .then(this.doUpload.bind(this))
               .then(this.logFiles.bind(this, response))
@@ -145,6 +147,7 @@ module.exports = {
           .then(this._uploadFileList.bind(this));
       },
       _getFilesToUpload: function getFilesToUpload() {
+        this.log('Generating file list for upload');
         var dir = this.readConfig('distDir');
         var filePattern = this.readConfig('filePattern');
         var pattern = path.join(dir, filePattern);
@@ -164,6 +167,7 @@ module.exports = {
         });
       },
       _uploadFileList: function uploadFileList(files) {
+        this.log('Beginning upload.');
         return Promise.all(files.map(throat(5, this._uploadFile.bind(this))))
           .then(this._getReleaseFiles.bind(this));
       },
