@@ -102,23 +102,23 @@ module.exports = {
         });
       },
       handleExistingRelease: function handleExistingRelease(response) {
-        this.log('Release ' + response.version + ' exists.');
-        this.log('Retrieving release files.');
+        this.log('Release ' + response.version + ' exists.', {verbose: true});
+        this.log('Retrieving release files.', {verbose: true});
         return this._getReleaseFiles().then(function(response) {
           if (this.readConfig('replaceFiles')) {
-            this.log('Replacing files.');
+            this.log('Replacing files.', {verbose: true});
             return Promise.all(response.map(this._deleteFile, this))
               .then(this.doUpload.bind(this))
               .then(this.logFiles.bind(this, response));
           } else {
-            this.log('Leaving files alone.');
+            this.log('Leaving files alone.', {verbose: true});
             return this.logFiles(response);
           }
         }.bind(this));
       },
       createRelease: function createRelease(error) {
         if (error.statusCode === 404) {
-          this.log('Release does not exist. Creating.');
+          this.log('Release does not exist. Creating.', {verbose: true});
         } else if (error.statusCode === 400) {
           this.log('Bad Request. Not Continuing');
           return Promise.resolve(error.message);
@@ -148,7 +148,7 @@ module.exports = {
           .then(this._uploadFileList.bind(this));
       },
       _getFilesToUpload: function getFilesToUpload() {
-        this.log('Generating file list for upload');
+        this.log('Generating file list for upload', {verbose: true});
         var dir = this.readConfig('distDir');
         var filePattern = this.readConfig('filePattern');
         var pattern = path.join(dir, filePattern);
@@ -168,7 +168,7 @@ module.exports = {
         });
       },
       _uploadFileList: function uploadFileList(files) {
-        this.log('Beginning upload.');
+        this.log('Beginning upload.', {verbose: true});
         return Promise.all(files.map(throat(5, this._uploadFile.bind(this))))
           .then(this._getReleaseFiles.bind(this));
       },
@@ -215,7 +215,7 @@ module.exports = {
         });
       },
       _deleteFile: function deleteFile(file) {
-        this.log('Deleting ' + file.name);
+        this.log('Deleting ' + file.name, {verbose: true});
         return request({
           uri: urljoin(this.releaseUrl, 'files/', file.id, '/'),
           method: 'DELETE',
