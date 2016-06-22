@@ -47,7 +47,7 @@ module.exports = {
             + this.readConfig('revisionKey')
             + '/';
         },
-        replaceFiles: false
+        replaceFiles: true
       },
       requiredConfig: ['publicUrl', 'sentryUrl', 'sentryOrganizationSlug', 'sentryProjectSlug', 'sentryApiKey', 'revisionKey'],
 
