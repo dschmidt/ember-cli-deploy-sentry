@@ -108,11 +108,11 @@ module.exports = {
           if (this.readConfig('replaceFiles')) {
             this.log('Replacing files.', {verbose: true});
             return Promise.all(response.map(this._deleteFile, this))
-              .then(this.doUpload.bind(this))
-              .then(this.logFiles.bind(this, response));
+              .then(this._doUpload.bind(this))
+              .then(this._logFiles.bind(this, response));
           } else {
             this.log('Leaving files alone.', {verbose: true});
-            return this.logFiles(response);
+            return this._logFiles(response);
           }
         }.bind(this));
       },
@@ -136,14 +136,14 @@ module.exports = {
           },
           resolveWithFullResponse: true
         })
-        .then(this.doUpload.bind(this))
-        .then(this.logFiles.bind(this))
+        .then(this._doUpload.bind(this))
+        .then(this._logFiles.bind(this))
         .catch(function(err){
           console.error(err);
           throw new SilentError('Creating release failed');
         });
       },
-      doUpload: function doUpload() {
+      _doUpload: function doUpload() {
         return this._getFilesToUpload()
           .then(this._uploadFileList.bind(this));
       },
@@ -224,7 +224,7 @@ module.exports = {
           },
         });
       },
-      logFiles: function logFiles(response) {
+      _logFiles: function logFiles(response) {
         this.log('Files known to sentry for this release', { verbose: true });
         response.forEach(function(file) { this.log('✔  ' + file.name, { verbose: true }); }, this);
       },
