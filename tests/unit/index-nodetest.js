@@ -121,7 +121,7 @@ describe('deploySentry plugin', function() {
           return previous;
         }, []);
 
-        assert.equal(messages.length, 4);
+        assert.equal(messages.length, 5);
       });
 
       it('adds default config to the config object', function() {
@@ -145,6 +145,7 @@ describe('deploySentry plugin', function() {
         context.config.deploySentry["filePattern"] = "/**/*.{js,map}";
         context.config.deploySentry["enableRevisionTagging"] = false;
         context.config.deploySentry["didDeployMessage"] = "ok";
+        context.config.deploySentry["replaceFiles"] = true;
       });
 
       it('does not warn about missing optional config', function() {
