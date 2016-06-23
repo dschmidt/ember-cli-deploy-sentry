@@ -1,5 +1,12 @@
 # ember-cli-deploy-sentry Changelog
 
+### 0.4.0
+
+- Gracefully handle reuploading sourcemaps for releases with assigned issues
+- Several logging improvements
+- Fix releaseMetaName not being respected by raven service
+- Several Documentation fixes
+
 ### 0.3.1
 
 - Fix possibly broken tarball
