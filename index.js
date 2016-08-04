@@ -96,7 +96,7 @@ module.exports = {
         return request({
           uri: releaseUrl,
           auth: {
-            user: this.sentrySettings.apiKey
+            bearer: this.sentrySettings.apiKey
           },
           json: true,
         });
@@ -128,7 +128,7 @@ module.exports = {
           uri: this.baseUrl,
           method: 'POST',
           auth: {
-            user: this.sentrySettings.apiKey
+            bearer: this.sentrySettings.apiKey
           },
           json: true,
           body: {
@@ -209,7 +209,7 @@ module.exports = {
         return request({
           uri: urljoin(this.releaseUrl, 'files/'),
           auth: {
-            user: this.sentrySettings.apiKey
+            bearer: this.sentrySettings.apiKey
           },
           json: true
         });
@@ -220,7 +220,7 @@ module.exports = {
           uri: urljoin(this.releaseUrl, 'files/', file.id, '/'),
           method: 'DELETE',
           auth: {
-            user: this.sentrySettings.apiKey
+            bearer: this.sentrySettings.apiKey
           },
         });
       },
