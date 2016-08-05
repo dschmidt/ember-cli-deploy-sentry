@@ -95,9 +95,7 @@ module.exports = {
       doesReleaseExist: function(releaseUrl) {
         return request({
           uri: releaseUrl,
-          auth: {
-            bearer: this.sentrySettings.apiKey
-          },
+          auth: this.sentrySettings.auth,
           json: true,
         });
       },
@@ -127,9 +125,7 @@ module.exports = {
         return request({
           uri: this.baseUrl,
           method: 'POST',
-          auth: {
-            bearer: this.sentrySettings.apiKey
-          },
+          auth: this.sentrySettings.auth,
           json: true,
           body: {
             version: this.sentrySettings.release
@@ -208,9 +204,7 @@ module.exports = {
       _getReleaseFiles: function getReleaseFiles() {
         return request({
           uri: urljoin(this.releaseUrl, 'files/'),
-          auth: {
-            bearer: this.sentrySettings.apiKey
-          },
+          auth: this.sentrySettings.auth,
           json: true
         });
       },
@@ -219,9 +213,7 @@ module.exports = {
         return request({
           uri: urljoin(this.releaseUrl, 'files/', file.id, '/'),
           method: 'DELETE',
-          auth: {
-            bearer: this.sentrySettings.apiKey
-          },
+          auth: this.sentrySettings.auth
         });
       },
       _logFiles: function logFiles(response) {

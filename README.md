@@ -29,7 +29,9 @@ ENV.sentry = {
   sentryUrl: 'https://sentry.your.awesome.site',
   sentryOrganizationSlug: 'AwesomeOrg',
   sentryProjectSlug: 'AwesomeProject',
-  sentryApiKey: 'awesomeApiKey'
+  auth: {
+    bearer: 'awesomeApiKey'  // Or user: 'awesomeApiKey', as appropriate
+  }
 }
 ```
 - Integrate [raven-js][2] in your page
@@ -108,9 +110,11 @@ You can specify this in project settings in sentry.
 
 *Required*
 
-### sentryApiKey
+### auth
 
-An api key you can create in your organization settings. Make sure it has the `project:write` privilege.
+An object with your api key, either under `bearer`, if you are uploading to the current Sentry API, or `user` if you are using an older API.
+
+You can create the api key in your organization settings. Make sure it has the `project:write` privilege.
 
 *Required*
 
