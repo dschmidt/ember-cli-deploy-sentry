@@ -78,6 +78,7 @@ module.exports = {
           organizationSlug: this.readConfig('sentryOrganizationSlug'),
           projectSlug: this.readConfig('sentryProjectSlug'),
           apiKey: this.readConfig('sentryApiKey'),
+          bearerApiKey: this.readConfig('sentryBearerApiKey'),
           release: this.readConfig('revisionKey')
         };
         this.baseUrl = urljoin(this.sentrySettings.url, '/api/0/projects/', this.sentrySettings.organizationSlug, this.sentrySettings.projectSlug, '/releases/');
@@ -92,10 +93,19 @@ module.exports = {
           .catch(this.createRelease.bind(this));
       },
 
+      generateAuth: function() {
+        var apiKey = this.sentrySettings.apiKey;
+        var bearerApiKey = this.sentrySettings.bearerApiKey;
+        if (bearerApiKey !== undefined) {
+          return { bearer: bearerApiKey };
+        }
+        return { user: apiKey };
+      },
+
       doesReleaseExist: function(releaseUrl) {
         return request({
           uri: releaseUrl,
-          auth: this.sentrySettings.auth,
+          auth: this.generateAuth(),
           json: true,
         });
       },
@@ -204,7 +214,7 @@ module.exports = {
       _getReleaseFiles: function getReleaseFiles() {
         return request({
           uri: urljoin(this.releaseUrl, 'files/'),
-          auth: this.sentrySettings.auth,
+          auth: this.generateAuth(),
           json: true
         });
       },
@@ -213,7 +223,7 @@ module.exports = {
         return request({
           uri: urljoin(this.releaseUrl, 'files/', file.id, '/'),
           method: 'DELETE',
-          auth: this.sentrySettings.auth
+          auth: this.generateAuth(),
         });
       },
       _logFiles: function logFiles(response) {
