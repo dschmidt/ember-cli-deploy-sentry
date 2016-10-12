@@ -135,7 +135,7 @@ module.exports = {
         return request({
           uri: this.baseUrl,
           method: 'POST',
-          auth: this.sentrySettings.auth,
+          auth: this.generateAuth(),
           json: true,
           body: {
             version: this.sentrySettings.release
