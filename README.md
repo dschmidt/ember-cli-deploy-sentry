@@ -30,9 +30,9 @@ ENV.sentry = {
   sentryOrganizationSlug: 'AwesomeOrg',
   sentryProjectSlug: 'AwesomeProject',
   // One of:
-  apiKey: 'awesomeApiKey',
+  sentryApiKey: 'awesomeApiKey',
   // or
-  bearerApiKey: 'awesomeApiKey'
+  sentryBearerApiKey: 'awesomeApiKey'
 }
 ```
 - Integrate [raven-js][2] in your page
