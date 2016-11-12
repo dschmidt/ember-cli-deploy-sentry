@@ -9,9 +9,7 @@ var urljoin = require("url-join");
 var request = require('request-promise');
 var path = require('path');
 var fs = require('fs');
-var FormData = require('form-data');
 var throat = require('throat');
-var url = require('url');
 
 
 module.exports = {
@@ -135,7 +133,7 @@ module.exports = {
         return request({
           uri: this.baseUrl,
           method: 'POST',
-          auth: this.sentrySettings.auth,
+          auth: this.generateAuth(),
           json: true,
           body: {
             version: this.sentrySettings.release
@@ -179,36 +177,19 @@ module.exports = {
           .then(this._getReleaseFiles.bind(this));
       },
       _uploadFile: function uploadFile(filePath) {
-        var sentrySettings = this.sentrySettings;
         var distDir = this.readConfig('distDir');
-        var sentry_url = this.sentrySettings.url;
-        var urlPath = urljoin(this.releaseUrl, 'files/');
-        var host = url.parse(sentry_url).host;
-        var formData = new FormData();
-        formData.append('name', urljoin(this.sentrySettings.publicUrl, filePath));
-
         var fileName = path.join(distDir, filePath);
-        var fileSize = fs.statSync(fileName)["size"];
-        formData.append('file', fs.createReadStream(fileName), {
-          knownLength: fileSize
-        });
 
-        return new Promise(function(resolve, reject) {
-          formData.submit({
-            protocol: 'https:',
-            host: host,
-            path: urlPath,
-            auth: sentrySettings.apiKey + ':'
-          }, function(error, result) {
-            if(error) {
-              reject(error);
-            }
-            result.resume();
+        var formData = {
+          name: urljoin(this.sentrySettings.publicUrl, filePath),
+          file: fs.createReadStream(fileName),
+        };
 
-            result.on('end', function() {
-              resolve();
-            });
-          });
+        return request({
+          uri: urljoin(this.releaseUrl, 'files/'),
+          method: 'POST',
+          auth: this.generateAuth(),
+          formData: formData
         });
       },
       _getReleaseFiles: function getReleaseFiles() {
