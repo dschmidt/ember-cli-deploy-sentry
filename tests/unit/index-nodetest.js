@@ -121,7 +121,7 @@ describe('deploySentry plugin', function() {
           return previous;
         }, []);
 
-        assert.equal(messages.length, 5);
+        assert.equal(messages.length, 4);
       });
 
       it('adds default config to the config object', function() {
@@ -130,7 +130,6 @@ describe('deploySentry plugin', function() {
         assert.isDefined(context.config.deploySentry.distDir);
         assert.isDefined(context.config.deploySentry.filePattern);
         assert.isDefined(context.config.deploySentry.enableRevisionTagging);
-        assert.isDefined(context.config.deploySentry.didDeployMessage);
       });
     });
 
@@ -144,7 +143,6 @@ describe('deploySentry plugin', function() {
         context.config.deploySentry["distDir"] = "dist/dir";
         context.config.deploySentry["filePattern"] = "/**/*.{js,map}";
         context.config.deploySentry["enableRevisionTagging"] = false;
-        context.config.deploySentry["didDeployMessage"] = "ok";
         context.config.deploySentry["replaceFiles"] = true;
       });
 
