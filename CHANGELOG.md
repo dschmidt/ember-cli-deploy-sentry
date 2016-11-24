@@ -1,5 +1,8 @@
 # ember-cli-deploy-sentry Changelog
 
+### 0.5.1
+- Remove documentation for `didDeployMessage` config option as its gone 
+
 ### 0.5.0
 Thanks to @kmiyashiro, @Turbo87 and especially @duizendnegen for making this release happen!
 
