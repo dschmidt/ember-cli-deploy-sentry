@@ -33,18 +33,6 @@ module.exports = {
           return context.revisionData && context.revisionData.revisionKey;
         },
         enableRevisionTagging: true,
-
-        didDeployMessage: function(/*context*/){
-          return "Uploaded sourcemaps to sentry release: "
-            + this.readConfig('sentryUrl')
-            + '/'
-            + this.readConfig('sentryOrganizationSlug')
-            + '/'
-            + this.readConfig('sentryProjectSlug')
-            + '/releases/'
-            + this.readConfig('revisionKey')
-            + '/';
-        },
         replaceFiles: true
       },
       requiredConfig: ['publicUrl', 'sentryUrl', 'sentryOrganizationSlug', 'sentryProjectSlug', 'sentryApiKey', 'revisionKey'],
@@ -213,10 +201,17 @@ module.exports = {
       },
 
       didDeploy: function(/* context */){
-        var didDeployMessage = this.readConfig('didDeployMessage');
-        if (didDeployMessage) {
-          this.log(didDeployMessage);
-        }
+        var deployMessage = "Uploaded sourcemaps to sentry release: "
+          + this.readConfig('sentryUrl')
+          + '/'
+          + this.readConfig('sentryOrganizationSlug')
+          + '/'
+          + this.readConfig('sentryProjectSlug')
+          + '/releases/'
+          + this.readConfig('revisionKey')
+          + '/';
+
+        this.log(deployMessage);
       }
     });
     return new DeployPlugin();
