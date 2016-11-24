@@ -1,5 +1,11 @@
 # ember-cli-deploy-sentry Changelog
 
+### 0.5.0
+Thanks to @kmiyashiro, @Turbo87 and especially @duizendnegen for making this release happen!
+
+- Add bearer token authentication [#21]
+- Support ember-cli-deploy-plugin 0.2.9 [#27]
+
 ### 0.4.0
 
 - Gracefully handle reuploading sourcemaps for releases with assigned issues
