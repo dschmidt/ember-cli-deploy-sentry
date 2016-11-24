@@ -125,26 +125,6 @@ The root directory that all files matching the `filePattern` will be uploaded fr
 
 *Default:* `context.distDir`
 
-### didDeployMessage
-
-A message that will be displayed after the distDir has been copied to destDir.
-
-*Default:*
-
-```javascript
-      didDeployMessage: function(context){
-      return "Uploaded sourcemaps to sentry release: "
-        + this.readConfig('sentryUrl')
-        + '/'
-        + this.readConfig('sentryOrganizationSlug')
-        + '/'
-        + this.readConfig('sentryProjectSlug')
-        + '/releases/'
-        + this.readConfig('revisionKey')
-        + '/';
-    }
-```
-
 ### filePattern
 
 `minimatch` expression that is used to determine which files should be uploaded from the `distDir`.
