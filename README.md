@@ -148,9 +148,17 @@ Enable adding a meta tag with the current revisionKey into the head of your `ind
 
 ### replaceFiles
 
-At deploy-time, the plugin will check your Sentry instance for an existing release under the current `revisionKey`. If a release is found and this is set to `true`, all existing files for the matching release will be deleted before the current build's files are uploaded to Sentry. If this is set to `false`, the files on Sentry will remain untouched and the just-built files will not be uploaded. 
+At deploy-time, the plugin will check your Sentry instance for an existing release under the current `revisionKey`. If a release is found and this is set to `true`, all existing files for the matching release will be deleted before the current build's files are uploaded to Sentry. If this is set to `false`, the files on Sentry will remain untouched and the just-built files will not be uploaded.
 
 *Default* true
+
+### gzippedFiles
+
+The list of files that have been gziped. This option should be relative to `distDir`. By default, this option will use the `gzippedFiles` property of the deployment context, provided by [ember-cli-deploy-gzip][13].
+
+This option will be used to determine which files in `distDir`, that match `filePattern`, require the gzip content encoding when uploading.
+
+*Default:* `context.gzippedFiles`
 
 ## Prerequisites
 
@@ -205,3 +213,4 @@ It works. We use it in production at [Hatchet](https://hatchet.is).
 [10]: http://ember-cli.github.io/ember-cli-deploy/plugins "Plugin Documentation"
 [11]: https://github.com/zapnito/ember-cli-deploy-build "ember-cli-deploy-build"
 [12]: https://github.com/zapnito/ember-cli-deploy-revision-data "ember-cli-deploy-revision-data"
+[13]: https://github.com/ember-cli-deploy/ember-cli-deploy-gzip "ember-cli-deploy-gzip"

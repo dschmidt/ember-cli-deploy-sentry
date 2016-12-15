@@ -33,6 +33,11 @@ module.exports = {
           return context.revisionData && context.revisionData.revisionKey;
         },
         enableRevisionTagging: true,
+
+        gzippedFiles: function(context) {
+          return context.gzippedFiles || []; // e.g. from ember-cli-deploy-gzip
+        },
+
         replaceFiles: true
       },
       requiredConfig: ['publicUrl', 'sentryUrl', 'sentryOrganizationSlug', 'sentryProjectSlug', 'sentryApiKey', 'revisionKey'],
@@ -135,6 +140,11 @@ module.exports = {
           throw new SilentError('Creating release failed');
         });
       },
+      _isFileGzipped(filePath) {
+        var gzippedFiles = this.readConfig('gzippedFiles') || [];
+        var isGzipped = gzippedFiles.indexOf(filePath) >= 0;
+        return isGzipped;
+      },
       _doUpload: function doUpload() {
         return this._getFilesToUpload()
           .then(this._uploadFileList.bind(this));
@@ -172,6 +182,10 @@ module.exports = {
           name: urljoin(this.sentrySettings.publicUrl, filePath),
           file: fs.createReadStream(fileName),
         };
+
+        if (this._isFileGzipped(filePath)) {
+          formData.header = 'content-encoding:gzip';
+        }
 
         return request({
           uri: urljoin(this.releaseUrl, 'files/'),
