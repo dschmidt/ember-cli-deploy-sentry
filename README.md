@@ -25,10 +25,13 @@ $ ember install ember-cli-deploy-sentry
 
 ```javascript
 ENV.sentry = {
+  // the URL or CDN your js assets are served from
   publicUrl: 'https://your.awesome.site',
+  // the sentry install you're using, https://sentry.io for hosted accounts
   sentryUrl: 'https://sentry.your.awesome.site',
   sentryOrganizationSlug: 'AwesomeOrg',
   sentryProjectSlug: 'AwesomeProject',
+  // For hosted accounts, generate your bearer/api key here: https://sentry.io/api/
   // One of:
   sentryApiKey: 'awesomeApiKey',
   // or
