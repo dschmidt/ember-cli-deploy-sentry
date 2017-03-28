@@ -1,5 +1,9 @@
 # ember-cli-deploy-sentry Changelog
 
+### 0.5.2
+- Fix deprecation warning for ember-cli/lib/ext/promise [#35]
+- Add config documentation [#33]
+
 ### 0.5.1
 - Remove documentation for `didDeployMessage` config option as its gone 
 
