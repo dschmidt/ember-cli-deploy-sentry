@@ -17,7 +17,7 @@ module.exports = {
 
   contentFor: function(type/*, config*/) {
     if (type === 'head-footer') {
-      return '<meta name="sentry:revision"></meta>';
+      return '<meta name="sentry:revision">';
     }
   },
 
