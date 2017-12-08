@@ -1,6 +1,6 @@
 {
-  "name": "ember-cli-deploy-sentry",
-  "version": "0.5.3",
+  "name": "@jasonmit/ember-cli-deploy-sentry",
+  "version": "0.6.0",
   "description": "Ember CLI Deploy plugin to upload javascript sourcemaps to sentry.",
   "directories": {
     "doc": "doc",
@@ -11,7 +11,7 @@
     "build": "ember build",
     "test": "node tests/runner.js"
   },
-  "repository": "dschmidt/ember-cli-deploy-sentry",
+  "repository": "jasonmit/ember-cli-deploy-sentry",
   "engines": {
     "node": ">= 0.10.0"
   },
@@ -22,6 +22,8 @@
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.0.2",
+    "chai": "^2.2.0",
+    "chai-as-promised": "^5.0.0",
     "ember-cli": "1.13.1",
     "ember-cli-app-version": "0.4.0",
     "ember-cli-content-security-policy": "0.4.0",
@@ -38,11 +40,9 @@
     "ember-disable-proxy-controllers": "^1.0.0",
     "ember-export-application-global": "^1.0.2",
     "ember-try": "0.0.6",
-    "rsvp": "^3.1.0",
-    "chai": "^2.2.0",
-    "chai-as-promised": "^5.0.0",
     "mocha": "^2.2.4",
-    "mock-fs": "^3.7.0"
+    "mock-fs": "^3.7.0",
+    "rsvp": "^3.1.0"
   },
   "keywords": [
     "ember-addon",
@@ -52,10 +52,11 @@
     "ember-cli-babel": "^5.0.0",
     "ember-cli-deploy-plugin": "^0.2.0",
     "glob": "^5.0.14",
+    "is-gzip": "^2.0.0",
     "request-promise": "^0.4.3",
     "silent-error": "^1.0.0",
-    "url-join": "0.0.1",
-    "throat": "^2.0.0"
+    "throat": "^2.0.0",
+    "url-join": "0.0.1"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
