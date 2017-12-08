@@ -1,14 +1,8 @@
-# Ember-cli-deploy-sentry [![Circle CI](https://circleci.com/gh/dschmidt/ember-cli-deploy-sentry/tree/master.svg?style=shield)](https://circleci.com/gh/dschmidt/ember-cli-deploy-sentry/tree/master)
+# @jasonmit/ember-cli-deploy-sentry
 
-> An ember-cli-deploy-plugin to upload javascript sourcemaps to [Sentry][1].
+> An ember-cli-deploy-plugin to upload javascript sourcemaps to [Sentry][1].  This fork supports automatically unzipping before the Sentry upload and re-zipping after the upload is complete.  This is necessary since Sentry does not yet support gzipped artifacts.
 
-[![](https://ember-cli-deploy.github.io/ember-cli-deploy-version-badges/plugins/ember-cli-deploy-sentry.svg)](http://ember-cli-deploy.github.io/ember-cli-deploy-version-badges/)
-
-## What is an ember-cli-deploy plugin?
-
-A plugin is an addon that can be executed as a part of the ember-cli-deploy pipeline. A plugin will implement one or more of the ember-cli-deploy's pipeline hooks.
-
-For more information on what plugins are and how they work, please refer to the [Plugin Documentation][10].
+`ember i @jasonmit/ember-cli-deploy-sentry`
 
 ## Quick Start
 To get up and running quickly, do the following:
