@@ -1,6 +1,8 @@
 # @jasonmit/ember-cli-deploy-sentry
 
-> An ember-cli-deploy-plugin to upload javascript sourcemaps to [Sentry][1].  This fork supports automatically unzipping before the Sentry upload and re-zipping after the upload is complete.  This is necessary since Sentry does not yet support gzipped artifacts.
+> An ember-cli-deploy-plugin to upload javascript sourcemaps to [Sentry][1].
+
+This fork automatically unzips artifact files before uploading them to Sentry and re-zipping after the upload is finished.  This is necessary since Sentry does not yet support gzipped artifacts.
 
 `ember i @jasonmit/ember-cli-deploy-sentry`
 
