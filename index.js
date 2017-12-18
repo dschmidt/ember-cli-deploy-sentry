@@ -35,7 +35,13 @@ module.exports = {
         enableRevisionTagging: true,
         replaceFiles: true
       },
-      requiredConfig: ['publicUrl', 'sentryUrl', 'sentryOrganizationSlug', 'sentryProjectSlug', 'sentryApiKey', 'revisionKey'],
+      requiredConfig: [
+        'publicUrl',
+        'sentryUrl',
+        'sentryOrganizationSlug',
+        'sentryProjectSlug',
+        'sentryBearerApiKey',
+        'revisionKey'],
 
       prepare: function(context) {
         var isEnabled = this.readConfig('enableRevisionTagging');
@@ -63,7 +69,6 @@ module.exports = {
           publicUrl: this.readConfig('publicUrl'),
           organizationSlug: this.readConfig('sentryOrganizationSlug'),
           projectSlug: this.readConfig('sentryProjectSlug'),
-          apiKey: this.readConfig('sentryApiKey'),
           bearerApiKey: this.readConfig('sentryBearerApiKey'),
           release: this.readConfig('revisionKey')
         };
@@ -80,12 +85,7 @@ module.exports = {
       },
 
       generateAuth: function() {
-        var apiKey = this.sentrySettings.apiKey;
-        var bearerApiKey = this.sentrySettings.bearerApiKey;
-        if (bearerApiKey !== undefined) {
-          return { bearer: bearerApiKey };
-        }
-        return { user: apiKey };
+        return { bearer: this.sentrySettings.bearerApiKey };
       },
 
       doesReleaseExist: function(releaseUrl) {
