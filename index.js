@@ -33,7 +33,8 @@ module.exports = {
           return context.revisionData && context.revisionData.revisionKey;
         },
         enableRevisionTagging: true,
-        replaceFiles: true
+        replaceFiles: true,
+        strictSSL: true,
       },
       requiredConfig: ['publicUrl', 'sentryUrl', 'sentryOrganizationSlug', 'sentryProjectSlug', 'sentryApiKey', 'revisionKey'],
 
@@ -93,6 +94,7 @@ module.exports = {
           uri: releaseUrl,
           auth: this.generateAuth(),
           json: true,
+          strictSSL: this.readConfig('strictSSL'),
         });
       },
       handleExistingRelease: function handleExistingRelease(response) {
@@ -126,7 +128,8 @@ module.exports = {
           body: {
             version: this.sentrySettings.release
           },
-          resolveWithFullResponse: true
+          resolveWithFullResponse: true,
+          strictSSL: this.readConfig('strictSSL'),
         })
         .then(this._doUpload.bind(this))
         .then(this._logFiles.bind(this))
@@ -177,14 +180,16 @@ module.exports = {
           uri: urljoin(this.releaseUrl, 'files/'),
           method: 'POST',
           auth: this.generateAuth(),
-          formData: formData
+          formData: formData,
+          strictSSL: this.readConfig('strictSSL'),
         });
       },
       _getReleaseFiles: function getReleaseFiles() {
         return request({
           uri: urljoin(this.releaseUrl, 'files/'),
           auth: this.generateAuth(),
-          json: true
+          json: true,
+          strictSSL: this.readConfig('strictSSL'),
         });
       },
       _deleteFile: function deleteFile(file) {
@@ -193,6 +198,7 @@ module.exports = {
           uri: urljoin(this.releaseUrl, 'files/', file.id, '/'),
           method: 'DELETE',
           auth: this.generateAuth(),
+          strictSSL: this.readConfig('strictSSL'),
         });
       },
       _logFiles: function logFiles(response) {
