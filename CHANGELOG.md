@@ -1,5 +1,9 @@
 # ember-cli-deploy-sentry Changelog
 
+### 0.5.4
+- Remove sentryApiKey from required config params [#43]
+- Add strictSSL option for request [#43]
+
 ### 0.5.3
 - Remove </meta> to prevent IE10 from breaking [#40]
 
@@ -8,7 +12,7 @@
 - Add config documentation [#33]
 
 ### 0.5.1
-- Remove documentation for `didDeployMessage` config option as its gone 
+- Remove documentation for `didDeployMessage` config option as its gone
 
 ### 0.5.0
 Thanks to @kmiyashiro, @Turbo87 and especially @duizendnegen for making this release happen!
