@@ -27,13 +27,11 @@ module.exports = {
     let DeployPlugin = DeployPluginBase.extend({
       name: options.name,
       runAfter: ['gzip', 's3'],
-
       requiredConfig: [
         'publicUrl',
         'sentryUrl',
         'sentryOrganizationSlug',
         'sentryProjectSlug',
-        'sentryApiKey',
         'revisionKey'
       ],
 
@@ -41,6 +39,9 @@ module.exports = {
         filePattern: '/**/*.{js,map}',
         enableRevisionTagging: true,
         replaceFiles: true,
+        enableRevisionTagging: true,
+        replaceFiles: true,
+        strictSSL: true,
         distDir(context) {
           return context.distDir;
         },
@@ -150,7 +151,8 @@ module.exports = {
         return request({
           uri: releaseUrl,
           auth: this.generateAuth(),
-          json: true
+          json: true,
+          strictSSL: this.readConfig('strictSSL')
         });
       },
 
@@ -187,7 +189,8 @@ module.exports = {
           body: {
             version: this.sentrySettings.release
           },
-          resolveWithFullResponse: true
+          resolveWithFullResponse: true,
+          strictSSL: this.readConfig('strictSSL'),
         })
           .then(this._doUpload.bind(this))
           .then(this._logFiles.bind(this))
@@ -236,14 +239,16 @@ module.exports = {
           uri: urljoin(this.releaseUrl, 'files/'),
           method: 'POST',
           auth: this.generateAuth(),
-          formData: formData
+          formData: formData,
+          strictSSL: this.readConfig('strictSSL'),
         });
       },
       _getReleaseFiles() {
         return request({
           uri: urljoin(this.releaseUrl, 'files/'),
           auth: this.generateAuth(),
-          json: true
+          json: true,
+          strictSSL: this.readConfig('strictSSL'),
         });
       },
       _deleteFile(file) {
@@ -251,7 +256,8 @@ module.exports = {
         return request({
           uri: urljoin(this.releaseUrl, 'files/', file.id, '/'),
           method: 'DELETE',
-          auth: this.generateAuth()
+          auth: this.generateAuth(),
+          strictSSL: this.readConfig('strictSSL')
         });
       },
       _logFiles(response) {

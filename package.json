@@ -1,6 +1,11 @@
 {
+<<<<<<< HEAD
   "name": "@jasonmit/ember-cli-deploy-sentry",
   "version": "0.6.1",
+=======
+  "name": "ember-cli-deploy-sentry",
+  "version": "0.5.4",
+>>>>>>> 223d2841e42687f3ab157aa235526cb52949a376
   "description": "Ember CLI Deploy plugin to upload javascript sourcemaps to sentry.",
   "directories": {
     "doc": "doc",
