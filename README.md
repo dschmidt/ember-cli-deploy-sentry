@@ -175,7 +175,7 @@ When you setup [raven-js][2] you can retrieve it like this:
 
 ```javascript
 Raven.config({
-    release: $("meta[name='sentry:revision']").attr('content')
+    release: document.querySelector("meta[name='sentry:revision']").content
 });
 ```
 
