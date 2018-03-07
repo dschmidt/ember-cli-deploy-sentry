@@ -5,7 +5,7 @@ export default RavenService.extend({
     releaseMetaName: 'sentry:revision',
     release: Ember.computed('releaseMetaName', {
         get: function() {
-            return Ember.$(`meta[name='${this.get('releaseMetaName')}']`).attr('content');
+            return document.querySelector(`meta[name='${this.get('releaseMetaName')}']`).content;
         }
     })
 });
