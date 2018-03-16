@@ -1,5 +1,8 @@
 # ember-cli-deploy-sentry Changelog
 
+### 0.5.5
+- Remove jQuery usages [#45]
+
 ### 0.5.4
 - Remove sentryApiKey from required config params [#43]
 - Add strictSSL option for request [#43]
