@@ -170,9 +170,10 @@ module.exports = {
       _uploadFile: function uploadFile(filePath) {
         var distDir = this.readConfig('distDir');
         var fileName = path.join(distDir, filePath);
+        var filePrefix = this._getFilePrefix();
 
         var formData = {
-          name: urljoin(this.sentrySettings.publicUrl, filePath),
+          name: urljoin(filePrefix, filePath),
           file: fs.createReadStream(fileName),
         };
 
@@ -183,6 +184,13 @@ module.exports = {
           formData: formData,
           strictSSL: this.readConfig('strictSSL'),
         });
+      },
+      _getFilePrefix: function() {
+        if (this.readConfig('urlPrefix')) {
+          return this.readConfig('urlPrefix');
+        }
+
+        return this.sentrySettings.publicUrl;
       },
       _getReleaseFiles: function getReleaseFiles() {
         return request({
