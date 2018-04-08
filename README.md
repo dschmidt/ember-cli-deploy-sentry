@@ -155,6 +155,14 @@ At deploy-time, the plugin will check your Sentry instance for an existing relea
 
 *Default* true
 
+### urlPrefix
+
+This sets a prefix to file names before uploading files to Sentry. This will overwrite `publicUrl` in the file name for your release's artifacts.
+
+i.e. If your assets are stored on Cloudfront, files would normally be named something like `https://xxxx.cloudfront.net/assets/...` in Sentry's release artifacts. If you set `urlPrefix` to `~`, files will instead be named `~/assets/...`
+
+*Default* Use `publicUrl`
+
 ## Prerequisites
 
 The following properties are expected to be present on the deployment `context` object:

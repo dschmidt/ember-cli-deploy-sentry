@@ -170,9 +170,14 @@ module.exports = {
       _uploadFile: function uploadFile(filePath) {
         var distDir = this.readConfig('distDir');
         var fileName = path.join(distDir, filePath);
+        var filePrefix = this.sentrySettings.publicUrl;
+
+        if (this.readConfig('urlPrefix')) {
+          filePrefix = this.readConfig('urlPrefix');
+        }
 
         var formData = {
-          name: urljoin(this.sentrySettings.publicUrl, filePath),
+          name: urljoin(filePrefix, filePath),
           file: fs.createReadStream(fileName),
         };
 
