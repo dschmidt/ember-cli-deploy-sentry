@@ -137,6 +137,8 @@ The root directory that all files matching the `filePattern` will be uploaded fr
 ### revisionKey
 
 The revision string that is used to create releases in sentry.
+
+*Default:*
 ```javascript
   revisionKey: function(context) {
     return context.revisionData && context.revisionData.revisionKey;
