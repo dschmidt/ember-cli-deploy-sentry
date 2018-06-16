@@ -58,7 +58,17 @@ module.exports = {
         fs.writeFileSync(indexPath, index);
       },
 
-      upload: function(/* context */) {
+      /**
+       * Upload the sourcemaps to Sentry
+       *
+       * We intentionally use the semantically not quite correct `didPrepare` hook instead of `upload` to work around
+       * an issue with ember-cli-deploy-gzip (and other compression plugins like -brotli or -compress), where gzipped
+       * sourcemaps are uploaded that Sentry is not able to decompress automatically. By using a hook before `willUpload`
+       * we will upload the still uncomspressed files.
+       *
+       * See https://github.com/dschmidt/ember-cli-deploy-sentry/issues/26 and https://github.com/getsentry/sentry/issues/4566
+       */
+      didPrepare: function(/* context */) {
         this.sentrySettings = {
           url: this.readConfig('sentryUrl'),
           publicUrl: this.readConfig('publicUrl'),
