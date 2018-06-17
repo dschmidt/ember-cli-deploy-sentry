@@ -49,7 +49,7 @@
     "ember-cli-deploy-plugin"
   ],
   "dependencies": {
-    "ember-cli-babel": "^5.0.0",
+    "ember-cli-babel": "^6.6.0",
     "ember-cli-deploy-plugin": "^0.2.0",
     "glob": "^5.0.14",
     "request-promise": "^0.4.3",
