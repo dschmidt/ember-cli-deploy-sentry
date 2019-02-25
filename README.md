@@ -21,6 +21,7 @@ To get up and running quickly, do the following:
 $ ember install ember-cli-deploy-sentry
 ```
 
+- For hosted accounts, generate your bearer/api key here: https://sentry.io/api/
 - Place the following configuration into `config/deploy.js`
 
 ```javascript
@@ -31,7 +32,7 @@ ENV.sentry = {
   sentryUrl: 'https://sentry.your.awesome.site',
   sentryOrganizationSlug: 'AwesomeOrg',
   sentryProjectSlug: 'AwesomeProject',
-  // For hosted accounts, generate your bearer/api key here: https://sentry.io/api/
+  
   // One of:
   sentryApiKey: 'awesomeApiKey',
   // or
