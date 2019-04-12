@@ -146,6 +146,25 @@ The revision string that is used to create releases in sentry.
   }
 ```
 
+### revisionCommits
+
+An array of revision commits allows us to associate commits with this Sentry release. See the [Sentry docs here](https://docs.sentry.io/workflow/releases/?platform=browser#using-the-api).
+
+*Default:*
+```javascript
+  revisionCommits: undefined
+```
+
+*Examples:*
+```javascript
+  revisionCommits: function(context) {
+    return [{
+      repository:"owner-name/repo-name", // required
+      id:"2da95dfb052f477380608d59d32b4ab9" // required
+    }]
+  }
+```
+
 ### enableRevisionTagging
 
 Enable adding a meta tag with the current revisionKey into the head of your `index.html`.
