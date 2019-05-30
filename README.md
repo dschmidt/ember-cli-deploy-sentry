@@ -115,7 +115,7 @@ You can specify this in project settings in sentry.
 
 *Required*
 
-### apiKey _or_ bearerApiKey
+### sentryApiKey _or_ sentryBearerApiKey
 
 Either an HTTP Basic Auth username, or a bearer token. If you are uploading to the current Sentry API, use the latter. Use the former if you are using an older API.
 
