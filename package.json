@@ -61,7 +61,7 @@
     "configPath": "tests/dummy/config",
     "after": "ember-cli-deploy-revision-data"
   },
-  "toolchain": {
+  "volta": {
     "node": "10.20.1"
   }
 }
