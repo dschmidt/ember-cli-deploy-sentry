@@ -121,7 +121,7 @@ describe('deploySentry plugin', function() {
           return previous;
         }, []);
 
-        assert.equal(messages.length, 5);
+        assert.equal(messages.length, 6);
       });
 
       it('adds default config to the config object', function() {
@@ -145,6 +145,10 @@ describe('deploySentry plugin', function() {
         context.config.deploySentry["enableRevisionTagging"] = false;
         context.config.deploySentry["replaceFiles"] = true;
         context.config.deploySentry["strictSSL"] = true;
+        context.config.deploySentry["revisionCommits"] = [{
+          "repository":"owner-org/repo-name",
+          "id":"4c9c05d912292cb1b3e63c7947505cf19366c078"
+        }];
       });
 
       it('does not warn about missing optional config', function() {

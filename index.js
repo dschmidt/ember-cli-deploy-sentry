@@ -32,6 +32,7 @@ module.exports = {
         revisionKey: function(context) {
           return context.revisionData && context.revisionData.revisionKey;
         },
+        revisionCommits: undefined,
         enableRevisionTagging: true,
         replaceFiles: true,
         strictSSL: true,
@@ -76,7 +77,8 @@ module.exports = {
           projectSlug: this.readConfig('sentryProjectSlug'),
           apiKey: this.readConfig('sentryApiKey'),
           bearerApiKey: this.readConfig('sentryBearerApiKey'),
-          release: this.readConfig('revisionKey')
+          release: this.readConfig('revisionKey'),
+          commits: this.readConfig('revisionCommits'),
         };
         this.baseUrl = urljoin(this.sentrySettings.url, '/api/0/projects/', this.sentrySettings.organizationSlug, this.sentrySettings.projectSlug, '/releases/');
         this.releaseUrl = urljoin(this.baseUrl, this.sentrySettings.release, '/');
@@ -130,14 +132,19 @@ module.exports = {
           return RSVP.resolve(error.message);
         }
 
+        var body = {
+          version: this.sentrySettings.release
+        };
+        if (this.sentrySettings.commits) {
+          body.commits = this.sentrySettings.commits;
+        }
+
         return request({
           uri: this.baseUrl,
           method: 'POST',
           auth: this.generateAuth(),
           json: true,
-          body: {
-            version: this.sentrySettings.release
-          },
+          body: body,
           resolveWithFullResponse: true,
           strictSSL: this.readConfig('strictSSL'),
         })
@@ -226,6 +233,10 @@ module.exports = {
           + '/releases/'
           + this.readConfig('revisionKey')
           + '/';
+
+        if (this.readConfig('revisionCommits')) {
+          deployMessage += '\n\t' + 'Commits ' + this.readConfig('revisionCommits').map(commit => commit.id).join(', ') + ' associated with this release';
+        }
 
         this.log(deployMessage);
       }

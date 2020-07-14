@@ -1,5 +1,11 @@
 # ember-cli-deploy-sentry Changelog
 
+### 0.7.0
+- Add ability to associate a commit with a release [#62]
+- Make it obvious where to get the keys for hosted accounts [#59]
+- Update mock-fs to use more recent versions of Node.js [#55]
+- Upload on didPrepare hook to fix gzip issues  [#52]
+
 ### 0.5.5
 - Remove jQuery usages [#45]
 
