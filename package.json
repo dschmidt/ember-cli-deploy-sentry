@@ -59,7 +59,10 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
-    "after": "ember-cli-deploy-revision-data"
+    "after": [
+      "ember-cli-deploy-revision-data",
+      "ember-cli-sentry"
+    ]
   },
   "volta": {
     "node": "10.20.1"
