@@ -5,12 +5,15 @@ var RSVP = require('rsvp');
 var DeployPluginBase = require('ember-cli-deploy-plugin');
 var SilentError         = require('silent-error');
 var glob = require("glob");
-var urljoin = require("url-join");
+var urljoin_ = require("url-join");
 var request = require('request-promise');
 var path = require('path');
 var fs = require('fs');
 var throat = require('throat');
 
+var urljoin = function(...args) {
+  return urljoin_(...args).split('\\').join('/');
+}
 
 module.exports = {
   name: 'ember-cli-deploy-sentry',
