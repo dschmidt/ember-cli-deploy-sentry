@@ -10,6 +10,7 @@ var request = require('request-promise');
 var path = require('path');
 var fs = require('fs');
 var throat = require('throat');
+var parse = require('parse-link-header');
 
 var urljoin = function(...args) {
   return urljoin_(...args).split('\\').join('/');
@@ -204,12 +205,23 @@ module.exports = {
           strictSSL: this.readConfig('strictSSL'),
         });
       },
-      _getReleaseFiles: function getReleaseFiles() {
+      _getReleaseFiles: function getReleaseFiles(options = {}) {
         return request({
-          uri: urljoin(this.releaseUrl, 'files/'),
+          uri: options.url || urljoin(this.releaseUrl, 'files/'),
           auth: this.generateAuth(),
           json: true,
+          resolveWithFullResponse: true,
           strictSSL: this.readConfig('strictSSL'),
+        }).then((response) => {
+          var links = parse(response.headers.link);
+
+          if (!links.next || links.next.results === 'false') {
+            return response.body;
+          }
+
+          return this._getReleaseFiles({url: links.next.url}).then((results) => {
+            return results.concat(response.body);
+          });
         });
       },
       _deleteFile: function deleteFile(file) {
