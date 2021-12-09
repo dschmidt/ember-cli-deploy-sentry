@@ -52,6 +52,7 @@
     "ember-cli-babel": "^6.6.0",
     "ember-cli-deploy-plugin": "^0.2.0",
     "glob": "^5.0.14",
+    "parse-link-header": "^1.0.1",
     "request-promise": "^4.2.5",
     "silent-error": "^1.0.0",
     "throat": "^2.0.0",
